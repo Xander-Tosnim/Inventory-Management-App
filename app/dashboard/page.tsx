@@ -5,7 +5,9 @@ import { TrendingUp } from "lucide-react";
 import ProductsChart from "@/components/productsChart";
 import { redirect } from "next/navigation";
 import ProgressCircleDemo from "./_components/ProgessCircle";
-import { ResponsiveContainer } from "recharts";
+
+export const dynamic = "force-dynamic";
+
 
 export default async function DashboardPage() {
 

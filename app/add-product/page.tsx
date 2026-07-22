@@ -1,9 +1,9 @@
 import Sidebar from "@/components/sidebar";
 import { createProduct } from "@/lib/actions/products";
 import { getCurrentUser } from "@/lib/currentUser";
-import { AccountSettingsCards } from "@neondatabase/auth/react";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
 
 export default async function AddProductPage() {
     const user = await getCurrentUser();
