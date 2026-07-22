@@ -5,6 +5,8 @@ import { prisma } from "@/lib/prisma";
 import { deleteProduct } from "@/lib/actions/products";
 import Pagination from "@/components/pagination";
 
+export const dynamic = "force-dynamic";
+
 
 export default async function InventoryPage({searchParams}: {searchParams: Promise<{ search?: string; page?: string; }>}) {
     const user = await getCurrentUser();
