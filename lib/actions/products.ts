@@ -5,6 +5,11 @@ import { getCurrentUser } from "../currentUser";
 import { prisma } from "../prisma";
 import { z } from "zod";
 
+type ActionResult = {
+    success: boolean;
+    message: string;
+}
+
 const ProductSchema = z.object({
     name: z.string().min(1, "Name is required"),
     price: z.coerce.number().nonnegative("Price must be non-negative"),
@@ -22,7 +27,7 @@ export async function deleteProduct(formData: FormData) {
     revalidatePath("/inventory")
 }
 
-export async function createProduct(formData: FormData) {
+export async function createProduct(prevState: ActionResult, formData: FormData) {
     const user = await getCurrentUser();
     const parsed = ProductSchema.safeParse({
         name: formData.get('name'),
@@ -31,10 +36,11 @@ export async function createProduct(formData: FormData) {
         sku: formData.get('sku') || undefined,
         lowStockAt: formData.get('lowStockAt') || undefined,
     });
-    if(!parsed.success) throw new Error("Validation failed");
+    if(!parsed.success) return { success: false, message: "Validation failed" };
     try{
-        await prisma.product.create({ data: { ...parsed.data, userId: String(user?.id) }})
+        await prisma.product.create({ data: { ...parsed.data, userId: String(user?.id) }});
+        return { success: true, message: "Product added successfully" };
     } catch (error) {
-        throw new Error("Failed to create product");
+       return { success: false, message: "Failed to create product" };
     }
 }
