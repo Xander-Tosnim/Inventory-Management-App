@@ -5,8 +5,6 @@ import { prisma } from "@/lib/prisma";
 import { deleteProduct } from "@/lib/actions/products";
 import Pagination from "@/components/pagination";
 
-export const dynamic = "force-dynamic";
-
 
 export default async function InventoryPage({searchParams}: {searchParams: Promise<{ search?: string; page?: string; }>}) {
     const user = await getCurrentUser();
@@ -29,8 +27,8 @@ export default async function InventoryPage({searchParams}: {searchParams: Promi
         prisma.product.findMany({ where, orderBy: {createdAt: "desc"}, skip: (page - 1) * pageSize, take: pageSize })
     ]);
     
-    
     const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+    
     return(
         <div className="min-h-screen bg-gray-50">
             <Sidebar currentPath="/inventory" />
@@ -75,7 +73,7 @@ export default async function InventoryPage({searchParams}: {searchParams: Promi
                                         <td className="px-6 py-4 text-sm text-gray-500">{Number(product.price).toFixed(2)}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{product.quantity}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{product.lowStockAt || "-"}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">
+                                        <td className="pl-6 py-4 text-sm text-gray-500 flex gap-1">
                                             <form action={async (formData: FormData) => { "use server"; await deleteProduct(formData) }}>
                                                 <input type="hidden" name="id" value={product.id} />
                                                 <button className="px-3 py-0.5 rounded-lg bg-red-600 hover:bg-red-700 text-red-200 hover:text-red-100 cursor-pointer">Delete</button>
@@ -101,6 +99,7 @@ export default async function InventoryPage({searchParams}: {searchParams: Promi
                         </div>
                     )}
                 </div>
+                
             </main>
         </div>
     )

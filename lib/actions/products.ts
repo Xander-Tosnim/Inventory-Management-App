@@ -18,6 +18,7 @@ const ProductSchema = z.object({
     lowStockAt: z.coerce.number().int().min(0).optional(),
 });
 
+// API functions --->>>
 
 export async function deleteProduct(formData: FormData) {
     const user = await getCurrentUser();
@@ -42,5 +43,33 @@ export async function createProduct(prevState: ActionResult, formData: FormData)
         return { success: true, message: "Product added successfully" };
     } catch (error) {
        return { success: false, message: "Failed to create product" };
+    }
+}
+
+export async function updateProduct(prevState: ActionResult, formData: FormData) {
+    const user = await getCurrentUser();
+    if (!user) throw new Error("User not authenticated");
+    const productId = String(formData.get("id") || "");
+    const parsed = ProductSchema.safeParse({
+        name: formData.get('name'),
+        price: formData.get('price'),
+        quantity: formData.get('quantity'),
+        sku: formData.get('sku') || undefined,
+        lowStockAt: formData.get('lowStockAt') || undefined,
+    });
+    if (!parsed.success) return { success: false, message: "Validation failed" };
+    try {
+        await prisma.product.update({
+            where: { id: productId, userId: user.id },
+            data: {
+                price: parsed.data.price,
+                quantity: parsed.data.quantity,
+                lowStockAt: parsed.data.lowStockAt,
+            }
+        });
+        revalidatePath("/inventory");
+        return { success: true, message: "Product updated successfully" };
+    } catch (error) {
+        return { success: false, message: "Failed to update product" };
     }
 }
