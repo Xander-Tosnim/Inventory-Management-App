@@ -2,12 +2,10 @@
 
 import { useActionState } from 'react';
 import { signInWithEmail } from './actions';
-import { getCurrentUser } from '@/lib/currentUser';
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { AccountSettingsCards } from '@neondatabase/auth/react';
 
 export default function SignInForm() {
+
 
   const [state, formAction, isPending] = useActionState(signInWithEmail, null);
 
@@ -32,7 +30,7 @@ export default function SignInForm() {
       </div>
 
       <div>
-        <label>Don't have an account? <a href="/sign-up" className='cursor-pointer underline hover:no-underline'>Create Account</a></label>
+        <label>Don`&apos`t have an account? <a href="/sign-up" className='cursor-pointer underline hover:no-underline'>Create Account</a></label>
       </div>
 
       {state?.error && (
