@@ -1,5 +1,4 @@
 "use client";
-
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -93,7 +92,7 @@ export default function HeroHome() {
             ))}
           </h1>
 
-          <p className="typing-text text-gray-200 text-xl"></p>
+          <p className="typing-text text-gray-100 text-xl"></p>
 
           <p className="hero-description text-2xl font-thin text-gray-600 m-8 max-w-2xl mx-auto">
             Streamline your inventory tracking with our powerful, easy-to-use
