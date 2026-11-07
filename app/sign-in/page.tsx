@@ -30,7 +30,7 @@ export default function SignInForm() {
       </div>
 
       <div>
-        <label>Don`&apos`t have an account? <a href="/sign-up" className='cursor-pointer underline hover:no-underline'>Create Account</a></label>
+        <label>Don&apos;t have an account? <a href="/sign-up" className='cursor-pointer underline hover:no-underline'>Create Account</a></label>
       </div>
 
       {state?.error && (
